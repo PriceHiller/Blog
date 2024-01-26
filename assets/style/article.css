@@ -50,7 +50,7 @@ article > p {
 }
 
 .article-tags > ul > li:not(:last-child)::after {
-  content: " ⦁";
+  content: " •";
 }
 
 .article-dates {
@@ -129,5 +129,5 @@ article > p {
 }
 
 .article-frontmatter-tags > ul > li:not(:last-child)::after {
-  content: " ⦁";
+  content: " •";
 }
