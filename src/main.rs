@@ -47,34 +47,36 @@ fn main() -> anyhow::Result<()> {
     println!("Rendering Articles");
     for dir_entry in posts_walkable {
         let path = dir_entry?.path();
-        if path.is_file() {
-            println!(
-                "Parsing Article: {}",
-                path.file_name().unwrap().to_str().unwrap()
-            );
-            let parsed_article = Article::parse(&path, &comrak_settings).unwrap();
-            println!(
-                "Rendering Article Template: {} - {}",
-                path.file_name().unwrap().to_str().unwrap(),
-                &parsed_article.frontmatter.name
-            );
-            let rendered_article = parsed_article
-                .render_template(&tera)
-                .context("Article Template Rendering Error")?;
-            let new_file_name = String::from(path.file_stem().unwrap().to_str().unwrap()) + ".html";
-            let write_path = &out_path.join(PathBuf::from(format!("articles/{}", &new_file_name)));
-
-            write_file(&write_path, rendered_article.as_bytes())?;
-            println!("Finished Rendering Article Template");
-
-            for article_tag in &parsed_article.frontmatter.tags {
-                let tag = detected_tags_article
-                    .entry(article_tag.clone())
-                    .or_default();
-                tag.push((parsed_article.frontmatter.clone(), new_file_name.clone()));
-            }
-            article_links.push((parsed_article.frontmatter.clone(), new_file_name.clone()));
+        if !path.is_file() {
+            continue;
         }
+        println!(
+            "Parsing Article: {}",
+            path.file_name().unwrap().to_str().unwrap()
+        );
+        let parsed_article = Article::parse(&path, &comrak_settings).unwrap();
+        println!(
+            "Rendering Article Template: {} - {}",
+            path.file_name().unwrap().to_str().unwrap(),
+            &parsed_article.frontmatter.name
+        );
+        let rendered_article = parsed_article
+            .render_template(&tera)
+            .context("Article Template Rendering Error")?;
+        let new_file_name = String::from(path.file_stem().unwrap().to_str().unwrap()) + ".html";
+        write_file(
+            &out_path.join(PathBuf::from(format!("articles/{}", &new_file_name))),
+            rendered_article.as_bytes(),
+        )?;
+        println!("Finished Rendering Article Template");
+
+        for article_tag in &parsed_article.frontmatter.tags {
+            let tag = detected_tags_article
+                .entry(article_tag.clone())
+                .or_default();
+            tag.push((parsed_article.frontmatter.clone(), new_file_name.clone()));
+        }
+        article_links.push((parsed_article.frontmatter.clone(), new_file_name.clone()));
     }
     println!("Finished rendering Article templates");
 
@@ -83,7 +85,7 @@ fn main() -> anyhow::Result<()> {
         .render_template(&tera)
         .context("Main Articles Page Rendering Error")?;
     let articles_write_path = &out_path.join("articles.html");
-    write_file(&articles_write_path, articles_page.as_bytes())?;
+    write_file(articles_write_path, articles_page.as_bytes())?;
     println!("Finished Rendering Articles Page");
 
     println!("Rendering Tags Page");
@@ -92,7 +94,7 @@ fn main() -> anyhow::Result<()> {
         .context("Main Tags Page Rendering Error")?;
 
     let tags_write_path = &out_path.join("tags.html");
-    write_file(&tags_write_path, tags_page.as_bytes())?;
+    write_file(tags_write_path, tags_page.as_bytes())?;
     println!("Finished Rendering Tags Page");
 
     println!("Rendering Individual Tag Pages");
@@ -115,10 +117,7 @@ fn main() -> anyhow::Result<()> {
         println!("Rendering Static Page: {}", &static_page);
         let rendered_static_page =
             tera.render(&format!("static/{}", &static_page), &static_context)?;
-        write_file(
-            &out_path.join(&static_page),
-            rendered_static_page.as_bytes(),
-        )?;
+        write_file(&out_path.join(static_page), rendered_static_page.as_bytes())?;
         println!("Finished Rendering Static Page: {}", &static_page);
     }
 
@@ -138,7 +137,7 @@ fn main() -> anyhow::Result<()> {
 
 fn copy_recursive(src: &PathBuf, dest: &PathBuf) -> anyhow::Result<()> {
     println!("Copying {} to {}", src.display(), dest.display());
-    std::fs::create_dir_all(&dest)?;
+    std::fs::create_dir_all(dest)?;
     blog::iter_dir(src, &|entry: &DirEntry| -> anyhow::Result<()> {
         let mut dest = dest.clone();
         let filetype = entry.file_type()?;
@@ -158,12 +157,11 @@ fn copy_recursive(src: &PathBuf, dest: &PathBuf) -> anyhow::Result<()> {
             std::fs::copy(std::fs::read_link(entry.path())?, &dest)?;
         } else {
             let _ = std::fs::remove_file(&dest);
-            std::fs::copy(&entry.path(), &dest)?;
+            std::fs::copy(entry.path(), &dest)?;
         }
         Ok(())
     })
 }
-
 
 fn write_file(file_path: &PathBuf, contents: &[u8]) -> anyhow::Result<()> {
     let mut dir = file_path.clone();
