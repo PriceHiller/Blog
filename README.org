@@ -5,7 +5,7 @@ This is my (Price Hiller) personal website/blog/whatever else it may become.
 ** Reporting Issues
 
 If you have found an issue within my site, say incorrect spelling, incorrect grammar, etc. open an issue on
-[[https://github.com/treatybreaker/Blog][github]] and please report it.
+[[https://github.com/PriceHiller/Blog][github]] and please report it.
 
 **** Reporting Issues that my code sucks/is bad/should be burnt inside a supernovae explosion
 
@@ -19,11 +19,11 @@ open to it.
 
 *** I just want to make a comment.
 
-Go [[https://github.com/treatybreaker/Blog/discussions/new?category=general][here]]
+Go [[https://github.com/PriceHiller/Blog/discussions/new?category=general][here]]
 
 *** I didn't understand something or want to ask a question about an article
 
-Go [[https://github.com/treatybreaker/Blog/discussions/new?category=q-a][here]]
+Go [[https://github.com/PriceHiller/Blog/discussions/new?category=q-a][here]]
 
 *** I am looking through this and you've set all of this stuff up, but you haven't written jack-
 

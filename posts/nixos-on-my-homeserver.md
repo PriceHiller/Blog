@@ -509,4 +509,4 @@ section, secrets managed in your config.
 
 If you want to see my config in all of its hideousness, you can find it [here](https://gitlab.orion-technologies.io/philler/nixos);
 
-If you found anything wrong or egregious feel free to file an issue on the [Github Mirror](https://github.com/treatybreaker/blog).
+If you found anything wrong or egregious feel free to file an issue on the [Github Mirror](https://github.com/PriceHiller/blog).
