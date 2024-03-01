@@ -278,7 +278,7 @@ a.anchor {
 blockquote {
   background-color: var(--sumiInk1);
   padding: 10px;
-  width: 90%;
+  min-width: 90%;
   border-left-width: 5px;
   border-left-style: solid;
   border-left-color: var(--sumiInk4);
@@ -313,8 +313,11 @@ code {
   padding: 2px;
   font-family: monospace;
   background-color: var(--sumiInk3);
-  font-size: 0.9rem;
   line-height: 22px;
+}
+
+p > code {
+  font-size: 0.9rem;
 }
 
 pre > code {
