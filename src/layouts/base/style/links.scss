@@ -1,0 +1,53 @@
+@use "../../theme/_wave.scss";
+
+@mixin hover {
+  color: wave.$sumiInk0;
+  background-color: wave.$fujiWhite;
+}
+
+a {
+  color: wave.$lightBlue;
+  text-decoration: underline dotted;
+
+  &:visited {
+    color: wave.$waveAqua1;
+  }
+  &:hover {
+    @include hover();
+  }
+}
+
+a.article-tag {
+  $size: 1em;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+  height: $size;
+  color: wave.$lightBlue;
+
+  .tag-icon {
+    color: wave.$carpYellow;
+    height: $size;
+    width: $size;
+  }
+  &:hover {
+    @include hover();
+
+    .tag-icon {
+      @include hover();
+    }
+  }
+}
+
+footer a {
+  color: wave.$lightBlue;
+  &:visited {
+    color: wave.$lightBlue;
+  }
+
+  &:hover {
+    @include hover();
+  }
+}

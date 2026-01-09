@@ -1,0 +1,94 @@
+@use "../../theme/_wave.scss";
+
+#main-menu {
+  // Ensures the bar sticks to the top of the viewport
+  top: 0;
+  position: fixed;
+
+  // Ensure the menu can always be seen
+  z-index: 100;
+
+  width: 100%;
+
+  // Done so clicks pass through the unused areas of the menu, children in the
+  // menu will need to set `pointer-events: initial` to get pointer events back
+  pointer-events: none;
+
+  // Align the menu centered horizontally
+  display: flex;
+  justify-content: center;
+
+  // Don't allow users to select the text, e.g. they want to do a CTRL+A might
+  // as well make it _somewhat_ easier
+  user-select: none;
+
+  nav {
+    $border-radius: 10px;
+    $border-color: wave.$sumiInk5;
+
+    @mixin bg-color($opacity) {
+      background-color: color-mix(
+        in srgb,
+        wave.$sumiInk3 $opacity,
+        transparent
+      );
+    }
+
+    @include bg-color(30%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    font-size: 1.1rem;
+    font-family: "Inter Tight Variable", sans-serif;
+    font-weight: 500;
+
+    height: 40px;
+    width: min(60%, 200px);
+
+    border-width: 4px;
+    border: 4px solid $border-color;
+    border-top-style: none;
+    pointer-events: initial;
+    border-bottom-right-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+
+    display: flex;
+    align-items: center;
+    align-content: strech;
+    overflow: hidden;
+
+    a {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // border-radius: inherit;
+
+      &:link,
+      &:visited {
+        color: wave.$fujiWhite;
+        text-decoration: none;
+      }
+
+      transition: all 0.2s ease-in-out;
+
+      &:hover,
+      &:visited:hover {
+        letter-spacing: +0.05em;
+        color: wave.$peachRed;
+        background-color: color-mix(in srgb, wave.$sumiInk4 70%, transparent);
+        font-weight: 700;
+      }
+
+      &:first-child {
+        border-right: $border-color solid 2px;
+      }
+
+      &:last-child {
+        border-left: $border-color solid 2px;
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "@blog/rehype-tree-sitter",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "napi": {
+    "binaryName": "rehype-tree-sitter",
+    "targets": [
+      "x86_64-pc-windows-msvc",
+      "x86_64-apple-darwin",
+      "x86_64-unknown-linux-gnu",
+      "aarch64-apple-darwin"
+    ]
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build": "napi build --platform --esm --release && tsc",
+    "build:debug": "napi build --platform --esm && tsc",
+    "lint": "oxlint .",
+    "version": "napi version",
+    "watch": "napi build --platform --release --esm --watch"
+  },
+  "dependencies": {
+    "hast-util-from-html": "^2.0.3",
+    "hast-util-to-string": "^3.0.1",
+    "unist-util-visit": "^5.0.0",
+    "unified": "^11.0.0",
+    "@emnapi/core": "^1.5.0",
+    "@emnapi/runtime": "^1.5.0",
+    "@napi-rs/cli": "^3.2.0",
+    "@oxc-node/core": "^0.0.35",
+    "@taplo/cli": "^0.7.0",
+    "@tybys/wasm-util": "^0.10.0",
+    "@types/hast": "^3.0.4",
+    "@types/node": "^25.0.3",
+    "ava": "^6.4.1",
+    "chalk": "^5.6.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6",
+    "npm-run-all2": "^8.0.4",
+    "rehype-stringify": "^10.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+  }
+}

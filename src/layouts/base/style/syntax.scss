@@ -1,0 +1,89 @@
+@use "../../theme/_wave.scss";
+
+code {
+  .ts-constant {
+    color: wave.$surimiOrange;
+  }
+
+  span[class^="ts-keyword"] {
+    color: wave.$oniViolet;
+    font-style: italic;
+  }
+
+  .ts-keyword-import {
+    color: wave.$waveRed;
+  }
+
+  .ts-constructor,
+  .ts-function,
+  .ts-function-method {
+    color: wave.$crystalBlue;
+  }
+
+  .ts-property,
+  .ts-variable-member {
+    color: wave.$carpYellow;
+  }
+
+  .ts-variable-parameter {
+    color: wave.$oniViolet2;
+  }
+
+  .ts-keyword-operator {
+    color: wave.$boatYellow2;
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  .ts-boolean {
+    color: wave.$surimiOrange;
+    font-weight: bold;
+  }
+
+  .ts-number {
+    color: wave.$sakuraPink;
+  }
+
+  .ts-punctuation,
+  .ts-punctuation-delimiter {
+    color: wave.$springViolet2;
+  }
+
+  .ts-character {
+    color: wave.$waveAqua1;
+  }
+
+  .ts-string {
+    color: wave.$springGreen;
+  }
+
+  .ts-string-escape {
+    color: wave.$boatYellow2;
+    font-weight: bold;
+  }
+
+  .ts-string-special,
+  .ts-punctuation-special,
+  .ts-constant-builtin,
+  .ts-type-builtin,
+  .ts-variable-parameter-builtin {
+    color: wave.$springBlue;
+  }
+
+  .ts-comment {
+    color: wave.$fujiGray;
+    font-style: italic;
+  }
+
+  .ts-operator {
+    color: wave.$boatYellow2;
+  }
+
+  .ts-type {
+    color: wave.$waveAqua1;
+  }
+
+  .ts-tag {
+    color: wave.$springBlue;
+  }
+}

@@ -1,0 +1,42 @@
+---
+
+import '@fontsource-variable/fira-code';
+import '@fontsource-variable/lexend-deca';
+import '@fontsource-variable/inter-tight';
+
+import './style/base.scss'
+
+import { CodeBlockEnhancer } from '@/components/CodeBlock';
+
+import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
+
+
+
+const { pageTitle } = Astro.props;
+
+const siteTitle = "Price Hiller's Blog"
+let title = siteTitle;
+if (pageTitle != undefined) {
+    title = `${pageTitle} | ${title} `;
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <div id="main-menu">
+      <Nav/>
+    </div>
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+    <CodeBlockEnhancer client:only="react" />
+    <Footer/>
+  </body>
+</html>

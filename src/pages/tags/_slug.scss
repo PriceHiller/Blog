@@ -1,0 +1,12 @@
+main {
+  .posts-tagged {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+
+    .article-tag {
+      font-size: 1.25em;
+    }
+  }
+}

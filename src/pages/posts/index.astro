@@ -1,0 +1,15 @@
+---
+import BaseLayout from '@/layouts/base/base.astro';
+import { PostListing } from '@/components/Posts';
+import { getPosts, groupPostsByDate } from '@/utils/posts';
+
+const posts = groupPostsByDate((await getPosts()));
+---
+
+<BaseLayout pageTitle="Blog Posts">
+  <body>
+    <h1>Blog Posts</h1>
+    <strong>THE LORE</strong>
+    <PostListing posts={posts} />
+  </body>
+</BaseLayout>

@@ -1,0 +1,14 @@
+main {
+  display: flex;
+  flex-direction: column;
+  width: min(300px, 95%);
+  > h1:first-of-type {
+    align-self: center;
+    padding: 10px;
+  }
+
+  article-tags {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}

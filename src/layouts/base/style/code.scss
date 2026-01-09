@@ -1,0 +1,154 @@
+@use "../../theme/_wave.scss";
+@use "sass:color";
+
+code {
+  font-family: "Fira Code Variable", monospace;
+  font-weight: 400;
+  border-radius: 5px;
+  $gap: 1px;
+  padding-left: $gap;
+  margin-left: -$gap;
+  padding-right: $gap;
+  margin-right: -$gap;
+  color: wave.$springViolet2;
+  background-color: wave.$sumiInk4;
+}
+
+pre {
+  $bg-color: wave.$sumiInk3;
+
+  display: block;
+  box-sizing: border-box;
+  overflow-x: auto;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  border: solid wave.$sumiInk5 2pt;
+  border-radius: 4px;
+  background-color: $bg-color;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: color.scale($bg-color, $lightness: 2%);
+    border-color: wave.$sumiInk6;
+  }
+
+  > code {
+    display: flex;
+    color: unset;
+    flex-direction: column;
+    overflow-x: scroll;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: transparent;
+
+    $code-padding: 8px;
+    padding: $code-padding;
+
+    @mixin use-full-width {
+      margin-left: -$code-padding;
+      margin-right: -$code-padding;
+      padding-left: $code-padding;
+      padding-right: $code-padding;
+    }
+
+    .hl-light {
+      background-color: rgba(255, 255, 255, 0.15);
+      @include use-full-width();
+      min-width: max-content;
+    }
+
+    .hl-blur {
+      filter: blur(1.2px);
+      transition: filter 0.2s ease;
+      @include use-full-width();
+      min-width: max-content;
+
+      &:hover,
+      &.revealed {
+        filter: blur(0);
+      }
+    }
+
+    .code-folded {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      overflow-y: hidden;
+      overflow-x: hidden;
+      position: relative;
+      background-color: rgba(0, 0, 0, 0.2);
+      @include use-full-width();
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0.25rem;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      &[data-lines] {
+        max-height: 1lh;
+
+        &::after {
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          content: "▶ (" attr(data-lines) " lines hidden)";
+        }
+      }
+
+      &.expanded {
+        max-height: none;
+        background-color: rgba(0, 0, 0, 0.2);
+        padding-right: 0;
+        overflow: visible;
+        @include use-full-width();
+        min-width: max-content;
+
+        &::after {
+          content: "▼";
+        }
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+
+.code-wrapper {
+  position: relative;
+  display: flex;
+  flex: 1;
+  overflow: auto;
+  width: 100%;
+
+  .copy-btn {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    z-index: 1;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0;
+    color: inherit;
+    transition: opacity 0.2s ease;
+
+    background-color: rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  &:hover .copy-btn {
+    opacity: 1;
+  }
+}

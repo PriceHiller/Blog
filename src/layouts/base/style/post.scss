@@ -1,0 +1,82 @@
+@use "../../theme/_wave.scss";
+
+article {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  gap: 0;
+  max-width: min(800px, 85%);
+  align-self: center;
+
+  article-header {
+    width: 100%;
+    font-family: "Inter Tight Variable", sans-serif;
+    display: flex;
+    align-self: center;
+    flex-direction: column;
+
+    article-title {
+      color: wave.$springGreen;
+      font-weight: 800;
+      font-size: 2.4rem;
+      padding-bottom: 10px;
+    }
+
+    article-info {
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    hr {
+      margin-top: 15px;
+      width: 100%;
+    }
+  }
+
+  article-body {
+    max-width: min(850px, 100%);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    a {
+      color: inherit;
+      text-decoration: underline;
+
+      &:visited {
+        color: inherit;
+      }
+
+      &:hover {
+        color: initial;
+      }
+    }
+  }
+}
+
+article-date {
+  display: flex;
+  flex-direction: row;
+  max-height: 100%;
+  gap: 3px;
+  justify-items: center;
+
+  .date-icon {
+    color: wave.$sakuraPink;
+    height: 1.3em;
+    width: 1.3em;
+  }
+}
+
+article-tags {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  max-height: 1em;
+}

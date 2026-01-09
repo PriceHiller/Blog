@@ -1,0 +1,17 @@
+---
+import { transform } from 'esbuild';
+
+interface Props {
+  code: string;
+}
+
+const { code } = Astro.props;
+
+// Compile TS to JS minified
+const { code: transformedCode } = await transform(code, {
+  loader: 'ts',
+  minify: true,
+});
+---
+
+<script is:inline set:html={transformedCode} />

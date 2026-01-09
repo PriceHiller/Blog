@@ -1,0 +1,15 @@
+---
+import BaseLayout from '@/layouts/base/base.astro';
+import { ArticleTags } from '@/components/Posts.tsx'
+import { getAllTags } from '@/utils/posts';
+
+import './_index.scss';
+
+
+const tags = [...(await getAllTags()).keys()];
+---
+
+<BaseLayout pageTitle="Tags">
+  <h1>Tags</h1>
+  <ArticleTags tags={tags} />
+</BaseLayout>

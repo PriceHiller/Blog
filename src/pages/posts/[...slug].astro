@@ -1,0 +1,31 @@
+---
+import { render } from 'astro:content';
+import Layout from '@/layouts/base/base.astro';
+import { PostHeader } from '@/components/Posts';
+import { getPosts } from '@/utils/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+
+const { Content } = await render(post);
+---
+
+<Layout pageTitle={post.data.title}>
+  <article>
+    <article-header>
+      <PostHeader post={post} />
+      <hr />
+    </article-header>
+    <article-body>
+      <Content />
+    </article-body>
+  </article>
+</Layout>

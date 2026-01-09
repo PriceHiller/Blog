@@ -1,0 +1,37 @@
+@use "../../theme/_wave.scss";
+
+table {
+  border-collapse: collapse;
+  thead {
+    background-color: wave.$sumiInk5;
+    th {
+      padding: 5px;
+
+
+      &:not(:first-child):not(:last-child) {
+        border-right: solid 1px wave.$fujiWhite;
+        border-left: solid 1px wave.$fujiWhite;
+      }
+    }
+  }
+  tr {
+    &:not(:last-child) {
+      border-bottom: dotted 1px wave.$fujiWhite;
+    }
+
+    &:nth-child(even) {
+      background-color: wave.$sumiInk4;
+    }
+
+    td {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+
+      &:not(:first-child):not(:last-child) {
+        border-right: solid 1px wave.$fujiWhite;
+        border-left: solid 1px wave.$fujiWhite;
+      }
+    }
+  }
+}

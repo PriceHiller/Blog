@@ -1,0 +1,52 @@
+@use "../../theme/_wave.scss";
+
+main {
+  align-items: center;
+
+  .posts {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .post-listing-group {
+      article-date {
+        border-bottom: solid 2px wave.$sumiInk6;
+
+        transition: all ease-in-out 0.15s;
+      }
+
+      &:hover article-date {
+        color: wave.$peachRed;
+        border-bottom: solid 2px wave.$sakuraPink;
+      }
+
+      .post-listing-entry {
+        display: flex;
+        flex-direction: column;
+        border-left: solid 2px wave.$sumiInk6;
+        max-width: 550px;
+        margin: 5px;
+        padding: 5px;
+        background-color: color-mix(in srgb, wave.$oniViolet 10%, transparent);
+
+        .post {
+          font-size: 1.3em;
+          color: wave.$springGreen;
+          font-weight: bold;
+
+          &:hover {
+            color: wave.$sumiInk0;
+          }
+        }
+
+        article-tags {
+          padding-top: 5px;
+          padding-bottom: 5px;
+          display: flex;
+          flex-direction: row;
+        }
+      }
+    }
+  }
+}

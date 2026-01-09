@@ -1,0 +1,38 @@
+@use "../../theme/_wave.scss";
+
+@mixin alert($name, $fg-color, $bg-color) {
+  &.#{$name} {
+    border-left-color: $fg-color;
+    background-color: $bg-color;
+
+    .alert-title {
+      color: $fg-color;
+    }
+  }
+}
+
+.alert {
+  border-left: 3px solid;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .alert-title {
+    .alert-icon {
+      height: 1em;
+      width: 1em;
+    }
+    font-size: 1.1em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  @include alert(note, wave.$crystalBlue, wave.$waveBlue1);
+  @include alert(tip, wave.$springGreen, wave.$winterGreen);
+  @include alert(warning, wave.$carpYellow, wave.$winterYellow);
+  @include alert(important, wave.$oniViolet, wave.$winterBlue);
+  @include alert(caution, wave.$waveRed, wave.$winterRed);
+}
