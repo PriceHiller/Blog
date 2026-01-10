@@ -5,7 +5,8 @@ import { defineCollection } from "astro:content";
 const posts = defineCollection({
   loader: glob({ pattern: "*/index.{mdx,md}", base: "./src/content/posts" }),
   schema: z.object({
-    title: z.string().optional(),
+    title: z.string(),
+    summary: z.string().optional(),
     tags: z
     .array(z.string())
     .optional()
