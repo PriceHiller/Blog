@@ -55,6 +55,13 @@ html {
         $margin: 3%;
         margin-left: $margin;
         margin-right: $margin;
+        border-left: solid 4px wave.$sumiInk6;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        padding: 8px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        background-color: color-mix(in srgb, wave.$sumiInk5 20%, transparent);
       }
 
       img {
