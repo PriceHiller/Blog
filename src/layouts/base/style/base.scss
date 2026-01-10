@@ -18,6 +18,9 @@ html {
   background-color: wave.$sumiInk1;
   color: wave.$fujiWhite;
 
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
