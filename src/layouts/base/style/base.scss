@@ -12,6 +12,8 @@ html {
   font-weight: 400;
   display: flex;
   height: 100%;
+  width: 100%;
+  overflow-x: hidden;
   flex-direction: column;
   align-items: center;
 
@@ -26,6 +28,8 @@ html {
     color 0.2s ease;
 
   body {
+    width: 100%;
+    overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
     font-size: 1.05rem;
     height: 100%;
@@ -64,16 +68,31 @@ html {
         background-color: color-mix(in srgb, wave.$sumiInk5 20%, transparent);
       }
 
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
       img {
+        border-radius: 4px;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.02) 25%,
+          rgba(255, 255, 255, 0.04) 50%,
+          rgba(255, 255, 255, 0.06) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 2.6s infinite;
+
         margin: 0;
         overflow: scroll;
-        max-height: 75vh;
-        max-width: min(95vw, 125%);
-        width: auto;
         height: auto;
+        min-width: min(80%);
         margin-left: 50%;
         transform: translateX(-50%);
-        border-radius: 4px;
       }
     }
   }
@@ -129,6 +148,6 @@ html {
     background-color: wave.$waveBlue1;
     margin-top: auto;
     min-height: 80px;
-    width: 100vw;
+    width: 100%;
   }
 }
