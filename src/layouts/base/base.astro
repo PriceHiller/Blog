@@ -4,6 +4,10 @@ import '@fontsource-variable/fira-code';
 import '@fontsource-variable/lexend-deca';
 import '@fontsource-variable/inter-tight';
 
+import firaCodeWoff2 from '@fontsource-variable/fira-code/files/fira-code-latin-wght-normal.woff2?url';
+import lexendDecaWoff2 from '@fontsource-variable/lexend-deca/files/lexend-deca-latin-wght-normal.woff2?url';
+import interTightWoff2 from '@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2?url';
+
 import './style/base.scss'
 
 import Nav from '@/components/Nav';
@@ -26,6 +30,9 @@ if (pageTitle != undefined) {
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" as="font" type="font/woff2" href={firaCodeWoff2} crossorigin="anonymous" />
+    <link rel="preload" as="font" type="font/woff2" href={lexendDecaWoff2} crossorigin="anonymous" />
+    <link rel="preload" as="font" type="font/woff2" href={interTightWoff2} crossorigin="anonymous" />
     <div id="main-menu">
       <Nav/>
     </div>
