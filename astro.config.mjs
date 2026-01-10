@@ -25,6 +25,9 @@ export default defineConfig({
   output: "static",
   site: "https://pricehiller.com",
   prefetch: true,
+  image: {
+    layout: "constrained",
+  },
   integrations: [
     react(),
     mdx({
