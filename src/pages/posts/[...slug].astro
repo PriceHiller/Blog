@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import Layout from '@/layouts/base/base.astro';
 import { PostHeader } from '@/components/Posts';
 import { getPosts } from '@/utils/posts';
+import { CodeBlockEnhancer } from '@/components/CodeBlock';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -28,4 +29,5 @@ const { Content } = await render(post);
       <Content />
     </article-body>
   </article>
+  <CodeBlockEnhancer client:only="react" />
 </Layout>

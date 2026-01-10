@@ -6,8 +6,6 @@ import '@fontsource-variable/inter-tight';
 
 import './style/base.scss'
 
-import { CodeBlockEnhancer } from '@/components/CodeBlock';
-
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 
@@ -36,7 +34,6 @@ if (pageTitle != undefined) {
     <main>
       <slot />
     </main>
-    <CodeBlockEnhancer client:only="react" />
     <Footer/>
   </body>
 </html>
