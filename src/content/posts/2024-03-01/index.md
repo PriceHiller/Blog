@@ -98,7 +98,7 @@ It seemed apparent to me that the question had no right answers. Imagine my surp
 the same code in an online compiler and received neither an error or warning. That made me lose a bit of sanity and a
 few hours later I realized the culprit, I have a _gat dang_ alias hiding out in my `zsh` config ruining property values:
 
-```zsh
+```bash
 alias gcc="gcc -Werror -Wall -Wpedantic -Warray-bounds -O3"
 ```
 
