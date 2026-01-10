@@ -60,9 +60,15 @@ const minCss = sass.compileString(
     <div id="main-menu">
       <Nav/>
     </div>
+    <script>
+      // Ensure the main content is focused so page down and page up works
+      // without needing to click -- makes it less of a pain for navigating via
+      // keyboard
+      document.querySelector('main')?.focus();
+    </script>
   </head>
   <body>
-    <main>
+    <main tabindex="-1">
       <slot />
     </main>
     <Footer/>
