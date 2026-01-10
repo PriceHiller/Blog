@@ -13,8 +13,6 @@ import './style/base.scss'
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 
-
-
 const { pageTitle } = Astro.props;
 
 const siteTitle = "Price Hiller's Blog"
@@ -22,6 +20,26 @@ let title = siteTitle;
 if (pageTitle != undefined) {
     title = `${pageTitle} | ${title} `;
 }
+
+
+// Evil shit done here to avoid a white flash when a page is loaded on a slow
+// or high latency connection
+import ThemeColors from '../theme/_wave.scss?raw';
+import * as sass from 'sass';
+
+const minCss = sass.compileString(
+  `
+  ${ThemeColors}
+  html {
+    background-color: $sumiInk0;
+    color: $fujiWhite;
+  }
+  `,
+  {
+    style: 'compressed'
+  }
+).css;
+
 ---
 
 <html lang="en">
@@ -33,6 +51,7 @@ if (pageTitle != undefined) {
     <link rel="preload" as="font" type="font/woff2" href={firaCodeWoff2} crossorigin="anonymous" />
     <link rel="preload" as="font" type="font/woff2" href={lexendDecaWoff2} crossorigin="anonymous" />
     <link rel="preload" as="font" type="font/woff2" href={interTightWoff2} crossorigin="anonymous" />
+    <style is:inline set:html={minCss}></style>
     <div id="main-menu">
       <Nav/>
     </div>
