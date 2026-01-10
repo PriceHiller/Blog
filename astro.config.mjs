@@ -43,4 +43,15 @@ export default defineConfig({
     syntaxHighlight: false,
     rehypePlugins: rehypePlugins,
   },
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          assetFileNames: 'static/[name]-[hash:20][extname]',
+          chunkFileNames: 'js/chunks/[name]-[hash:20].js',
+          entryFileNames: 'js/[name]-[hash:20].js'
+        }
+      }
+    }
+  }
 });
