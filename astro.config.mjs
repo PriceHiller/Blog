@@ -25,6 +25,9 @@ export default defineConfig({
   output: "static",
   site: "https://pricehiller.com",
   prefetch: true,
+  build: {
+    assets: 'assets'
+  },
   image: {
     layout: "constrained",
     responsiveStyles: true
