@@ -36,9 +36,4 @@ export default defineConfig({
     syntaxHighlight: false,
     rehypePlugins: rehypePlugins,
   },
-  vite: {
-    build: {
-      assetsInlineLimit: 1024,
-    },
-  },
 });
