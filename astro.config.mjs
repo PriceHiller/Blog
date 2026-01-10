@@ -27,6 +27,7 @@ export default defineConfig({
   prefetch: true,
   image: {
     layout: "constrained",
+    responsiveStyles: true
   },
   integrations: [
     react(),
