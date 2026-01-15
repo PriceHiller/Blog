@@ -1,0 +1,7 @@
+@use './_lotus.scss';
+
+:export {
+  @each $name, $value in lotus {
+    #{$name}: $value;
+  }
+}

@@ -1,0 +1,7 @@
+@use './_dragon.scss';
+
+:export {
+  @each $name, $value in dragon {
+    #{$name}: $value;
+  }
+}

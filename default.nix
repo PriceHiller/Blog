@@ -35,6 +35,8 @@ bun2nix.mkDerivation {
     useFakeNode = false;
   };
 
+  ASTRO_TELEMETRY_DISABLED = 1;
+
   buildPhase = ''
     bun run build
   '';

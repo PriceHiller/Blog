@@ -28,15 +28,14 @@ if (pageTitle != undefined) {
 
 // Evil shit done here to avoid a white flash when a page is loaded on a slow
 // or high latency connection
-import ThemeColors from '../theme/_wave.scss?raw';
 import * as sass from 'sass';
+import Wave from '@/style/theme/_wave.module.scss';
 
 const minCss = sass.compileString(
   `
-  ${ThemeColors}
   html {
-    background-color: $sumiInk0;
-    color: $fujiWhite;
+    background-color: ${Wave.sumiInk0};
+    color: ${Wave.fujiWhite};
   }
   `,
   {

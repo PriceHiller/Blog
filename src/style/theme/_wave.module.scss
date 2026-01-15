@@ -1,0 +1,7 @@
+@use './_wave.scss';
+
+:export {
+  @each $name, $value in wave {
+    #{$name}: $value;
+  }
+}
