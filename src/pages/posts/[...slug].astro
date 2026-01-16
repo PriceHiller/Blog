@@ -2,13 +2,12 @@
 import { render } from 'astro:content';
 import Layout from '@/layouts/base/base.astro';
 import { PostHeader } from '@/components/Posts';
-import { getPosts } from '@/utils/posts';
+import { Posts } from '@/utils/posts';
 import { CodeBlockEnhancer } from '@/components/CodeBlock';
 
 export async function getStaticPaths() {
-  const posts = await getPosts();
 
-  return posts.map(post => ({
+  return Posts.map(post => ({
     params: { slug: post.id },
     props: { post },
   }));
@@ -19,7 +18,7 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<Layout pageTitle={post.data.title} pageDescription={post.data.summary}>
+<Layout pageTitle={post.title} pageDescription={post.data.summary}>
   <article>
     <article-header>
       <PostHeader post={post} />

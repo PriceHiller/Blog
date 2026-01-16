@@ -26,11 +26,11 @@ export default defineConfig({
   site: "https://pricehiller.com",
   prefetch: true,
   build: {
-    assets: 'assets'
+    assets: "assets",
   },
   image: {
     layout: "constrained",
-    responsiveStyles: true
+    responsiveStyles: true,
   },
   integrations: [
     react(),
@@ -47,11 +47,11 @@ export default defineConfig({
     build: {
       rollupOptions: {
         output: {
-          assetFileNames: 'static/[name]-[hash:20][extname]',
-          chunkFileNames: 'js/chunks/[name]-[hash:20].js',
-          entryFileNames: 'js/[name]-[hash:20].js'
-        }
-      }
-    }
-  }
+          assetFileNames: "static/[name]-[hash:20][extname]",
+          chunkFileNames: "js/chunks/[name]-[hash:20].js",
+          entryFileNames: "js/[name]-[hash:20].js",
+        },
+      },
+    },
+  },
 });

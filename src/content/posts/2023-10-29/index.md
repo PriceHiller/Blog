@@ -167,12 +167,13 @@ I'm sure this heading won't be incendiary or anything.
 At the time of writing, I self-host [Gitlab](https://about.gitlab.com/) to store all of my code and run CI/CD
 operations. Originally I handled this all in Ansible and a bit of spit shine on [Debian](https://www.debian.org/).
 
-Now NixOS is *really* cool, it provides a [built-in Gitlab service](https://search.nixos.org/options?channel=23.05&from=0&size=50&sort=relevance&type=packages&query=services.gitlab)! Which I don't use... yeah. The Gitlab service NixOS provides is a touch out of date and because Gitlab is the worst platform on the face of the planet of Earth when it comes to administration you can't restore a backup on even slightly different versions of Gitlab. So the built-in module is right out 😦.
+Now NixOS is _really_ cool, it provides a [built-in Gitlab service](https://search.nixos.org/options?channel=23.05&from=0&size=50&sort=relevance&type=packages&query=services.gitlab)! Which I don't use... yeah. The Gitlab service NixOS provides is a touch out of date and because Gitlab is the worst platform on the face of the planet of Earth when it comes to administration you can't restore a backup on even slightly different versions of Gitlab. So the built-in module is right out 😦.
 
 I'm not screwed, there's another solution. Gitlab provides a [docker
 image](https://docs.gitlab.com/ee/install/docker.html). That's what I ultimately went with.
 
 I have a `docker` directory nestled within Luna's config with a `default.nix` file that looks like so:
+
 ```nix
 { pkgs, ... }:
 {
@@ -196,7 +197,7 @@ I have a `docker` directory nestled within Luna's config with a `default.nix` fi
 }
 ```
 
-I don't *really* need docker-compose, but I'm saving myself trouble ahead of time and just shoving it on the system.
+I don't _really_ need docker-compose, but I'm saving myself trouble ahead of time and just shoving it on the system.
 Increased attack surface? Yeah, a bit. Actually a likely issue? Nope, and it's damn useful.
 
 The `gitlab.nix` file its importing looks like:
@@ -259,6 +260,7 @@ issues as me.
 ---
 
 Part uno, the actual Gitlab instance on Docker.
+
 ```nix
 virtualisation.oci-containers.containers.gitlab = {
   image = "gitlab/gitlab-ee:latest";
@@ -284,6 +286,7 @@ variable `gitlab_home` was defined earlier as `/opt`. I persist that directory b
 stuff there.
 
 Make sure you've allowed port `2222` on the firewall:
+
 ```nix
 networking.firewall.allowedTCPPorts = [ 2222 ];
 ```
@@ -346,7 +349,7 @@ Of course replace the external URL with yours. We disable HTTPS in the Nginx con
 host with our own reverse proxy. Bind it on to port 80 which we pass out to the host accessible at `8080` to the docker
 container. The one setting that wasted the most time of mine was `gitlab_shell_ssh_port` by a mile. Why did it not work?
 Maybe I had the port closed on the network firewall, the world may never know. Real quick though, make sure you set
-`gitlab_shell_ssh_port` to the *external* port that you're opening on the host, not the internal.
+`gitlab_shell_ssh_port` to the _external_ port that you're opening on the host, not the internal.
 
 ---
 
@@ -371,8 +374,8 @@ services.gitlab-runner = {
 You may have noticed I slightly changed the assignment for the `registrationConfigFile`. We'll talk about secrets
 management in a sec. For the general use, if you don't want to handle secrets in your NixOS configuration, just set that
 path to something like `/opt/gitlab/gitlab-runner-config` and store the config there. You'll need to get a runner token
-from the Admin area which is located in the middle of nowhere. If you forgot how to get to the *stuck in Utah Admin
-panel button* I've gotchu. Go to your Gitlab instance' home page, on the top left there is "Search or go to...", click
+from the Admin area which is located in the middle of nowhere. If you forgot how to get to the _stuck in Utah Admin
+panel button_ I've gotchu. Go to your Gitlab instance' home page, on the top left there is "Search or go to...", click
 that and then click "Admin Area" in the modal that pops up. They couldn't have hidden that better if they tried, I
 swear.
 
@@ -384,12 +387,14 @@ need the `url` and `token` from it.
 
 Now remember the `registrationConfigFile` option mentioned earlier? This is when that becomes relevant. Create a file at
 the `registrationConfigFile` path on the NixOS system and place the following into it:
+
 ```
 CI_SERVER_URL=<URL-HERE>
 REGISTRATION_TOKEN=<TOKEN-HERE>
 ```
 
 So for me it would look something like:
+
 ```
 CI_SERVER_URL=https://gitlab.orion-technologies.io
 REGISTRATION_TOKEN=wdjD-dwa23AsdahSAli-ALWO
@@ -435,6 +440,7 @@ the public keys that can encrypt the secrets where the age private key we genera
 from your generated age key and let's modify the `secrets.nix` file.
 
 Here is my `secrets.nix` file:
+
 ```nix
 let
   keys = rec {
@@ -452,11 +458,13 @@ in
   "gitlab-runner-reg-config.age".publicKeys = keys.orion-tech.luna;
 }
 ```
+
 Take note that I have a master key and then a machine specific key for Luna. In the body we define the file that will be
 encrypted with the given public keys, in my config that would be `gitlab-runner-reg.config.age` which allows either the
 master key to decrypt it or Luna's key to decrypt it.
 
 Let's go ahead and create the Gitlab runner config:
+
 ```bash
 agenix -e gitlab-runner-reg-config.age -i /path/to/your/age/key
 ```
@@ -465,6 +473,7 @@ This will open the editor defined in your `$EDITOR` with the decrypted contents 
 file.
 
 Let's go ahead and fill that out and save it in this format from earlier:
+
 ```
 CI_SERVER_URL=<URL-HERE>
 REGISTRATION_TOKEN=<TOKEN-HERE>
@@ -474,6 +483,7 @@ Great! We have our secret. How do we access it in our flake?
 
 Earlier we had a `services.gitlab-runner` which had a `registrationConfigFile` setting. Instead of using `toString
 <PATH-HERE>` we'll now use our secret like so:
+
 ```nix
 age.secrets.gitlab-runner-reg-config.file =  ../secrets/gitlab-runner-reg-config.age;
 services.gitlab-runner = {
@@ -495,10 +505,9 @@ Replace `../secrets/gitlab-runner-reg-config.age` with the path to your secret.
 
 You're done, that's it. Pretty neat, huh?
 
-If you  don't like storing your secrets in a public repository you can of course add the `secrets` directory in as a git
+If you don't like storing your secrets in a public repository you can of course add the `secrets` directory in as a git
 submodule from a private repository if you so desire. You can read up on git submodules if that caught your interest
 [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
-
 
 # The End?
 

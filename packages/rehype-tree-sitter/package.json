@@ -44,6 +44,5 @@
     "remark-rehype": "^11.1.2",
     "typescript": "^5.9.3"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

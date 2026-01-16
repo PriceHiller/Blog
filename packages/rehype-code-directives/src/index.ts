@@ -1,7 +1,7 @@
-import { visit } from 'unist-util-visit';
-import { toString } from 'hast-util-to-string';
-import type { Root, Element, ElementContent, Text } from 'hast';
-import type { Plugin } from 'unified';
+import { visit } from "unist-util-visit";
+import { toString } from "hast-util-to-string";
+import type { Root, Element, ElementContent, Text } from "hast";
+import type { Plugin } from "unified";
 
 interface Options {
   directiveMarker?: string;
@@ -19,22 +19,22 @@ interface Scope {
 }
 
 const rehypeCodeDirectives: Plugin<[Options?], Root> = (options = {}) => {
-  const marker = options.directiveMarker ?? ':::';
+  const marker = options.directiveMarker ?? ":::";
 
   return (tree) => {
-    visit(tree, 'element', (node: Element) => {
-      if (node.tagName !== 'pre') return;
+    visit(tree, "element", (node: Element) => {
+      if (node.tagName !== "pre") return;
 
       const codeElement = node.children.find(
-        (c): c is Element => c.type === 'element' && c.tagName === 'code'
+        (c): c is Element => c.type === "element" && c.tagName === "code",
       );
       if (!codeElement) return;
 
       const flatNodes: ElementContent[] = [];
       for (const child of codeElement.children) {
-        if (child.type === 'text' && child.value.includes('\n')) {
+        if (child.type === "text" && child.value.includes("\n")) {
           child.value.split(/(\n)/g).forEach((part) => {
-            if (part) flatNodes.push({ type: 'text', value: part });
+            if (part) flatNodes.push({ type: "text", value: part });
           });
         } else {
           flatNodes.push(child);
@@ -45,7 +45,7 @@ const rehypeCodeDirectives: Plugin<[Options?], Root> = (options = {}) => {
       let currentBuffer: ElementContent[] = [];
 
       for (const n of flatNodes) {
-        if (n.type === 'text' && n.value === '\n') {
+        if (n.type === "text" && n.value === "\n") {
           lines.push({ nodes: currentBuffer, newline: n });
           currentBuffer = [];
         } else {
@@ -60,11 +60,14 @@ const rehypeCodeDirectives: Plugin<[Options?], Root> = (options = {}) => {
       const activeStack: string[] = [];
 
       for (const line of lines) {
-        const lineText = line.nodes.map((n) => toString(n)).join('').trim();
+        const lineText = line.nodes
+          .map((n) => toString(n))
+          .join("")
+          .trim();
         let isDirective = false;
 
         if (lineText.includes(marker)) {
-          if (lineText.endsWith(marker) && !lineText.includes('[')) {
+          if (lineText.endsWith(marker) && !lineText.includes("[")) {
             activeStack.pop();
             isDirective = true;
           } else {
@@ -72,7 +75,7 @@ const rehypeCodeDirectives: Plugin<[Options?], Root> = (options = {}) => {
             if (matches) {
               for (const m of matches) {
                 const content = m.slice(1, -1);
-                const eqIndex = content.indexOf('=');
+                const eqIndex = content.indexOf("=");
                 if (eqIndex > -1) {
                   const key = content.slice(0, eqIndex).trim();
                   let value = content.slice(eqIndex + 1).trim();
@@ -84,7 +87,7 @@ const rehypeCodeDirectives: Plugin<[Options?], Root> = (options = {}) => {
                     value = value.slice(1, -1);
                   }
 
-                  if (key.toLowerCase() === 'class') {
+                  if (key.toLowerCase() === "class") {
                     activeStack.push(value);
                     isDirective = true;
                   }
@@ -104,7 +107,9 @@ const rehypeCodeDirectives: Plugin<[Options?], Root> = (options = {}) => {
       }
 
       const newRootChildren: ElementContent[] = [];
-      const scopeStack: Scope[] = [{ triggerClass: 'ROOT', children: newRootChildren }];
+      const scopeStack: Scope[] = [
+        { triggerClass: "ROOT", children: newRootChildren },
+      ];
 
       for (const line of renderLines) {
         let commonDepth = 0;
@@ -124,14 +129,17 @@ const rehypeCodeDirectives: Plugin<[Options?], Root> = (options = {}) => {
         while (scopeStack.length <= line.stack.length) {
           const nextClass = line.stack[scopeStack.length - 1];
           const newSpan: Element = {
-            type: 'element',
-            tagName: 'span',
+            type: "element",
+            tagName: "span",
             properties: { className: [nextClass] },
             children: [],
           };
 
           scopeStack[scopeStack.length - 1].children.push(newSpan);
-          scopeStack.push({ triggerClass: nextClass, children: newSpan.children });
+          scopeStack.push({
+            triggerClass: nextClass,
+            children: newSpan.children,
+          });
         }
 
         const currentScope = scopeStack[scopeStack.length - 1];

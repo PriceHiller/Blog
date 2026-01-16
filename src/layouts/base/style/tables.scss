@@ -7,7 +7,6 @@ table {
     th {
       padding: 5px;
 
-
       &:not(:first-child):not(:last-child) {
         border-right: solid 1px wave.$fujiWhite;
         border-left: solid 1px wave.$fujiWhite;

@@ -43,6 +43,7 @@ We don't want to overwrite existing data, and thus we have strategies for resolv
 - Brent's Method
 
 # Separate Chaining
+
 Considered to be the simplest technique for resolving collisions, each slot in the array references a linked list (or other similar data structure) of records that collide on that slot. Each record stores its key and associated value.
 
 To insert into a hash table using chaining, call a hash function to get an index in which to store a given value in an array. Instead of directly inserting the value at that index, instead create a link between that index and a new node for a linked list.
@@ -50,11 +51,13 @@ To insert into a hash table using chaining, call a hash function to get an index
 If we have multiple records under a single index in the array, each record points to the next one and we insert onto the last record in that position.
 
 # Linear Probing
+
 Instead of storing colliding records under a separate data structure, open addressing instead stores directly on the array using a method known as probing.
 
 When inserting a new record that collides with a preexisting record in the array, probing searches for the next available empty spot in the array and inserts the value there.
 
 For example, given a slight modification of an earlier array like so:
+
 ```
 <key>,<value> or (Null)
 ┌────────────────────────────────────────────────────────────────┐
@@ -63,9 +66,10 @@ For example, given a slight modification of an earlier array like so:
        0         1         2        3          4          5
 ```
 
-Let's say we want to insert a new person Jane with weight 120 and that our hash function informs us to insert at index 3. There's an issue though, Sam already exists at index 3 and thus we cannot insert Jane into index 3. Thus we employ *linear probing* to find the next empty location in the array. The next empty location in this case is index 4, and thus we insert "Jane, 120" at position 4 in the array.
+Let's say we want to insert a new person Jane with weight 120 and that our hash function informs us to insert at index 3. There's an issue though, Sam already exists at index 3 and thus we cannot insert Jane into index 3. Thus we employ _linear probing_ to find the next empty location in the array. The next empty location in this case is index 4, and thus we insert "Jane, 120" at position 4 in the array.
 
 Our newly formed array will look something like this:
+
 ```
 <key>,<value> or (Null)
 ┌───────────────────────────────────────────────────────────────────┐

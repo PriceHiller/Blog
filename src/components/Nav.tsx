@@ -7,5 +7,5 @@ export default function Nav() {
       <a href="/posts">Posts</a>
       <a href="/tags">Tags</a>
     </nav>
-  )
+  );
 }

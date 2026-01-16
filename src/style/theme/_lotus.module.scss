@@ -1,4 +1,4 @@
-@use './_lotus.scss';
+@use "./_lotus.scss";
 
 :export {
   @each $name, $value in lotus {

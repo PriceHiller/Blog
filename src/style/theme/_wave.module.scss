@@ -1,4 +1,4 @@
-@use './_wave.scss';
+@use "./_wave.scss";
 
 :export {
   @each $name, $value in wave {

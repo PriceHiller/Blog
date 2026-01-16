@@ -8,10 +8,10 @@ const posts = defineCollection({
     title: z.string(),
     summary: z.string().optional(),
     tags: z
-    .array(z.string())
-    .optional()
-    .default([])
-    .transform((arr) => [...new Set(arr)].sort()),
+      .array(z.string())
+      .optional()
+      .default([])
+      .transform((arr) => [...new Set(arr)].sort()),
   }),
 });
 

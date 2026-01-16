@@ -1,28 +1,32 @@
 ---
-import BaseLayout from '@/layouts/base/base.astro';
-import { ArticleTag, PostListing } from '@/components/Posts';
-import { getAllTags, groupPostsByDate, type Post } from '@/utils/posts';
+import BaseLayout from "@/layouts/base/base.astro";
+import { ArticleTag, PostListing } from "@/components/Posts";
+import { Posts } from "@/utils/posts";
 
-import './_slug.scss';
-
+import "./_slug.scss";
 
 export async function getStaticPaths() {
-
-const tags = await getAllTags();
-return [...tags.keys().map(tag => ({
-  params: { slug: tag },
- props: { posts: tags.get(tag) },
-}))];
+  const tags = Posts.allTags();
+  return tags.map((tag) => {
+    const posts = Posts.taggedWith(tag.tag);
+    return {
+      params: { slug: tag.tag },
+      props: { posts },
+    };
+  });
 }
 
 const { slug: tag } = Astro.params;
 let { posts } = Astro.props;
-posts =  posts ?? [] as Post[];
+
+console.warn(
+  `>${tag}>>`,
+  posts.map((post) => post.data),
+);
 ---
 
 <BaseLayout pageTitle={`Posts Tagged ${tag}`}>
   <h1>{tag}</h1>
-  <strong class="posts-tagged">Posts tagged<ArticleTag tag={tag}/></strong>
-
-  <PostListing posts={groupPostsByDate(posts)} />
+  <strong class="posts-tagged">Posts tagged<ArticleTag tag={tag} /></strong>
+  <PostListing posts={posts} />
 </BaseLayout>

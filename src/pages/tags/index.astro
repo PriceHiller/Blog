@@ -1,15 +1,16 @@
 ---
 import BaseLayout from '@/layouts/base/base.astro';
-import { ArticleTags } from '@/components/Posts.tsx'
-import { getAllTags } from '@/utils/posts';
+import { ArticleTagsWithCount } from '@/components/Posts.tsx'
+import { Posts } from '@/utils/posts';
 
 import './_index.scss';
 
 
-const tags = [...(await getAllTags()).keys()];
+const tagCounts = Posts.allTags();
+
 ---
 
 <BaseLayout pageTitle="Tags">
   <h1>Tags</h1>
-  <ArticleTags tags={tags} />
+  <ArticleTagsWithCount tags={tagCounts} />
 </BaseLayout>

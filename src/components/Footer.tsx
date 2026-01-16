@@ -4,5 +4,5 @@ export default function Footer() {
       <a href="https://github.com/PriceHiller/blog">Source Code</a>
       <a href="/contact">Contact</a>
     </footer>
-  )
+  );
 }

@@ -1,4 +1,10 @@
-import { Info, Lightbulb, MessageSquareWarning, OctagonAlert, TriangleAlert } from "lucide-react";
+import {
+  Info,
+  Lightbulb,
+  MessageSquareWarning,
+  OctagonAlert,
+  TriangleAlert,
+} from "lucide-react";
 import React from "react";
 
 function createAlert(alertType: string, Icon: React.ElementType) {
@@ -7,7 +13,9 @@ function createAlert(alertType: string, Icon: React.ElementType) {
     return (
       <blockquote>
         <div className={`alert ${alertType.toLowerCase()}`}>
-          <div className={`alert-title`}><Icon className="alert-icon" /> {alertType}</div>
+          <div className={`alert-title`}>
+            <Icon className="alert-icon" /> {alertType}
+          </div>
           <div className={`alert-content`}>{children} </div>
         </div>
       </blockquote>
