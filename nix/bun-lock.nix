@@ -145,8 +145,8 @@
     url = "https://registry.npmjs.org/@babel/types/-/types-7.28.6.tgz";
     hash = "sha512-0ZrskXVEHSWIqZM/sQZ4EV3jZJXRkio/WCxaqKZP1g//CEWEPSfeZFcms4XeKBCHU0ZKnIkdJeU/kF+eRp5lBg==";
   };
-  "@blog/rehype-code-directives" = copyPathToStore ./packages/rehype-code-directives;
-  "@blog/rehype-tree-sitter" = copyPathToStore ./packages/rehype-tree-sitter;
+  "@blog/rehype-code-directives" = copyPathToStore ./../packages/rehype-code-directives;
+  "@blog/rehype-tree-sitter" = copyPathToStore ./../packages/rehype-tree-sitter;
   "@capsizecss/unpack@4.0.0" = fetchurl {
     url = "https://registry.npmjs.org/@capsizecss/unpack/-/unpack-4.0.0.tgz";
     hash = "sha512-VERIM64vtTP1C4mxQ5thVT9fK0apjPFobqybMtA1UdUujWka24ERHbRHFGmpbbhp73MhV+KSsHQH9C6uOTdEQA==";

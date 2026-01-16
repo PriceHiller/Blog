@@ -5,13 +5,10 @@
   rustc,
   ...
 }:
-let
-
-in
 bun2nix.mkDerivation {
-  packageJson = ./package.json;
+  packageJson = ./../package.json;
 
-  src = ./.;
+  src = ./../.;
 
   # We need to build the rust-based highlighter in the isolated build
   # environment Nix creates, if we just do a normal `bun run build` then the
@@ -23,9 +20,10 @@ bun2nix.mkDerivation {
     rustPlatform.cargoSetupHook
     rustc
   ];
+
   cargoRoot = "packages/rehype-tree-sitter";
   cargoDeps = rustPlatform.importCargoLock {
-    lockFile = ./packages/rehype-tree-sitter/Cargo.lock;
+    lockFile = ./../packages/rehype-tree-sitter/Cargo.lock;
   };
 
   # See docs for bun2nix over @ https://nix-community.github.io/bun2nix/

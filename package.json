@@ -14,7 +14,7 @@
     "preview": "astro preview",
     "format": "prettier --write .",
     "astro": "astro",
-    "postinstall": "bun2nix -o bun-lock.nix"
+    "postinstall": "bun2nix --copy-prefix ./../ --output-file ./nix/bun-lock.nix"
   },
   "dependencies": {
     "@astrojs/mdx": "5.0.0-alpha.0",
