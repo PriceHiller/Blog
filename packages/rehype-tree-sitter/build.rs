@@ -6,7 +6,10 @@ fn compile_grammar(lib_name: &str, src_dir: &Path) {
 
     // Safety check: if the path doesn't exist, don't crash, just print warning or skip
     if !parser_path.exists() {
-        println!("cargo:warning=Skipping {} because parser.c was not found at {:?}", lib_name, parser_path);
+        println!(
+            "cargo:warning=Skipping {} because parser.c was not found at {:?}",
+            lib_name, parser_path
+        );
         return;
     }
 
@@ -52,14 +55,11 @@ fn main() {
     // TypeScript
     compile_grammar(
         "tree-sitter-typescript",
-        &ts_base.join("typescript").join("src")
+        &ts_base.join("typescript").join("src"),
     );
 
     // TSX
-    compile_grammar(
-        "tree-sitter-tsx",
-        &ts_base.join("tsx").join("src")
-    );
+    compile_grammar("tree-sitter-tsx", &ts_base.join("tsx").join("src"));
 
     println!("cargo:rerun-if-changed=grammars");
 }
