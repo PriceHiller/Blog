@@ -17,9 +17,9 @@
     "postinstall": "bun2nix --copy-prefix ./../ --output-file ./nix/bun-lock.nix"
   },
   "dependencies": {
-    "@astrojs/mdx": "5.0.0-alpha.0",
-    "@astrojs/react": "^4.4.2",
-    "@astrojs/sitemap": "3.6.1-alpha.1",
+    "@astrojs/mdx": "5.0.0-beta.3",
+    "@astrojs/react": "5.0.0-beta.3",
+    "@astrojs/sitemap": "3.6.1-beta.2",
     "@astrojs/ts-plugin": "^1.10.6",
     "@blog/rehype-code-directives": "workspace:*",
     "@blog/rehype-tree-sitter": "workspace:*",
@@ -28,7 +28,7 @@
     "@fontsource-variable/lexend-deca": "^5.2.10",
     "@mdx-js/react": "^3.1.1",
     "@mdx-js/rollup": "^3.1.1",
-    "astro": "^5.16.9",
+    "astro": "6.0.0-beta.6",
     "html-react-parser": "^5.2.11",
     "lucide-react": "^0.562.0",
     "react": "^19.2.3",
