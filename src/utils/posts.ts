@@ -27,11 +27,16 @@ const __Posts = await (async () => {
   const posts = await getCollection("posts");
 
   return posts.map((post) => {
-    const match = post.filePath!.match(/.*\/posts\/(\d{4}-\d{2}-\d{2})(?:-(.+))?\/.*.mdx?$/);
+    const match = post.filePath!.match(
+      /.*\/posts\/(\d{4}-\d{2}-\d{2})(?:-(.+))?\/.*.mdx?$/,
+    );
     return {
       ...post,
       date: new PostDate(match ? match[1] : "0000-00-00"),
       title: post.data.title || (match ? match[2] : post.id),
+      meta: {
+        wordCount: post.body!.split(" ").length,
+      },
     };
   });
 })();

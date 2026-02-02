@@ -31,6 +31,7 @@ a.article-tag {
     color: wave.$carpYellow;
     height: $size;
     width: $size;
+    margin-top: 3px;
   }
   &:hover {
     @include hover();

@@ -1,7 +1,7 @@
 import { type Post } from "@/utils/posts";
 import type { CustomHtmlElement } from "@/utils/types";
 import type { PostDate, PostsArray, TagCount } from "@/utils/posts";
-import { Calendar, Tag } from "lucide-react";
+import { Calendar, Tag, ALargeSmall } from "lucide-react";
 
 export const ArticleDateElement = "article-date" as CustomHtmlElement;
 export function ArticleDate({ date }: { date: PostDate }) {
@@ -49,16 +49,33 @@ export function ArticleTagsWithCount({ tags }: { tags: TagCount[] }) {
   );
 }
 
+export const ArticleWordCountElement =
+  "article-word-count" as CustomHtmlElement;
+export function ArticleWordCount({ count }: { count: number }) {
+  return (
+    <ArticleWordCountElement>
+      <ALargeSmall className="word-count-icon" />
+      {`Words: ${count}`}
+    </ArticleWordCountElement>
+  );
+}
+
 export const ArticleTitleElement = "article-title" as CustomHtmlElement;
 export const ArticleInfoElement = "article-info" as CustomHtmlElement;
+export const ArticleMetaElement = "article-meta" as CustomHtmlElement;
 export function PostHeader({ post }: { post: Post }) {
   return (
     <>
-      <ArticleTitleElement>{post.data.title}</ArticleTitleElement>
-      <ArticleInfoElement>
-        <ArticleDate date={post.date} />
-        <ArticleTags tags={[...post.data.tags]} />
-      </ArticleInfoElement>
+      <div>
+        <ArticleTitleElement>{post.data.title}</ArticleTitleElement>
+        <ArticleInfoElement>
+          <ArticleMetaElement>
+            <ArticleDate date={post.date} />
+            <ArticleWordCount count={post.meta.wordCount} />
+          </ArticleMetaElement>
+          <ArticleTags tags={[...post.data.tags]} />
+        </ArticleInfoElement>
+      </div>
     </>
   );
 }
@@ -76,8 +93,9 @@ export function PostListing({ posts }: { posts: PostsArray }) {
           {posts.map((post) => (
             <div className="post-listing-entry" key={post.id}>
               <a className="post" href={`/posts/${post.id}`}>
-                {post.data.title}
+                <div className="post-title">{post.data.title}</div>
               </a>
+              <ArticleWordCount count={post.meta.wordCount} />
               <ArticleTags tags={[...post.data.tags]} />
             </div>
           ))}

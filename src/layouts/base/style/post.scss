@@ -27,6 +27,12 @@ article {
       display: flex;
       flex-direction: column;
       gap: 10px;
+
+      article-meta {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
     }
 
     hr {
@@ -60,17 +66,27 @@ article {
   }
 }
 
+article-word-count,
 article-date {
   display: flex;
   flex-direction: row;
   max-height: 100%;
   gap: 3px;
   justify-items: center;
+  align-items: center;
+
+  .word-count-icon {
+    color: wave.$peachRed;
+    height: 1.3em;
+    width: 1.3em;
+    margin-top: 2px;
+  }
 
   .date-icon {
     color: wave.$sakuraPink;
-    height: 1.3em;
-    width: 1.3em;
+    height: 1.2em;
+    width: 1.2em;
+    margin-bottom: 3px;
   }
 }
 
