@@ -1,35 +1,36 @@
 ---
+import "@fontsource/maple-mono/400.css";
+import "@fontsource/maple-mono/400-italic.css";
+import "@fontsource-variable/lexend";
+import "@fontsource-variable/inter-tight";
 
-import '@fontsource-variable/fira-code';
-import '@fontsource-variable/lexend-deca';
-import '@fontsource-variable/inter-tight';
+import lexendWoff2 from "@fontsource-variable/lexend/files/lexend-latin-wght-normal.woff2?url";
+import mapleNormalWoff2 from "@fontsource/maple-mono/files/maple-mono-latin-400-normal.woff2";
+import mapleItalicWoff2 from "@fontsource/maple-mono/files/maple-mono-latin-400-italic.woff2";
+import interTightWoff2 from "@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2?url";
 
-import firaCodeWoff2 from '@fontsource-variable/fira-code/files/fira-code-latin-wght-normal.woff2?url';
-import lexendDecaWoff2 from '@fontsource-variable/lexend-deca/files/lexend-deca-latin-wght-normal.woff2?url';
-import interTightWoff2 from '@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2?url';
+import "./style/base.scss";
 
-import './style/base.scss'
-
-import Nav from '@/components/Nav';
-import Footer from '@/components/Footer';
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 type Props = {
-  pageTitle?: string
-  pageDescription?: string
-}
+  pageTitle?: string;
+  pageDescription?: string;
+};
 
 const { pageTitle, pageDescription } = Astro.props;
 
-const siteTitle = "Price Hiller's Blog"
+const siteTitle = "Price Hiller's Blog";
 let title = siteTitle;
 if (pageTitle != undefined) {
-    title = `${pageTitle} | ${title} `;
+  title = `${pageTitle} | ${title} `;
 }
 
 // Evil shit done here to avoid a white flash when a page is loaded on a slow
 // or high latency connection
-import * as sass from 'sass';
-import Wave from '@/style/theme/_wave.module.scss';
+import * as sass from "sass";
+import Wave from "@/style/theme/_wave.module.scss";
 
 const minCss = sass.compileString(
   `
@@ -39,10 +40,9 @@ const minCss = sass.compileString(
   }
   `,
   {
-    style: 'compressed'
-  }
+    style: "compressed",
+  },
 ).css;
-
 ---
 
 <html lang="en">
@@ -50,27 +50,55 @@ const minCss = sass.compileString(
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    <meta name="description" content={pageDescription ?? "Price Hiller's Blog"} />
+    <meta
+      name="description"
+      content={pageDescription ?? "Price Hiller's Blog"}
+    />
     <meta name="color-scheme" content="dark" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="preload" as="font" type="font/woff2" href={firaCodeWoff2} crossorigin="anonymous" />
-    <link rel="preload" as="font" type="font/woff2" href={lexendDecaWoff2} crossorigin="anonymous" />
-    <link rel="preload" as="font" type="font/woff2" href={interTightWoff2} crossorigin="anonymous" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href={mapleNormalWoff2}
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href={mapleItalicWoff2}
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href={lexendWoff2}
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href={interTightWoff2}
+      crossorigin="anonymous"
+    />
     <style is:inline set:html={minCss}></style>
-    <div id="main-menu">
-      <Nav/>
-    </div>
-    <script>
-      // Ensure the main content is focused so page down and page up works
-      // without needing to click -- makes it less of a pain for navigating via
-      // keyboard
-      document.querySelector('main')?.focus();
-    </script>
-  </head>
+  </head><div id="main-menu">
+    <Nav />
+  </div>
+  <script>
+    // Ensure the main content is focused so page down and page up works
+    // without needing to click -- makes it less of a pain for navigating via
+    // keyboard
+    document.querySelector("main")?.focus();
+  </script>
+
   <body>
     <main>
       <slot />
     </main>
-    <Footer/>
+    <Footer />
   </body>
 </html>

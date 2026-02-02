@@ -2,8 +2,17 @@
 @use "sass:color";
 
 code {
-  font-family: "Fira Code Variable", monospace;
+  font-family: "Maple Mono", monospace;
   font-weight: 400;
+  // See https://font.subf.dev/en/playground/ for options
+  font-feature-settings:
+    "cv01",
+    "cv02",
+    "cv31",
+    "ss07",
+    "ss01" on,
+    "ss03" off,
+    "ss05";
   border-radius: 5px;
   $gap: 1px;
   padding-left: $gap;
