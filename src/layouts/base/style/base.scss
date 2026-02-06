@@ -13,7 +13,6 @@ html {
   display: flex;
   height: 100%;
   width: 100%;
-  overflow-x: hidden;
   flex-direction: column;
   align-items: center;
   color-scheme: dark;
@@ -21,16 +20,18 @@ html {
   background-color: wave.$sumiInk1;
   color: wave.$fujiWhite;
 
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
+
+  scroll-padding-top: 80px;
 
   body {
-    scroll-behavior: smooth;
-    scroll-padding-top: 80px;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
 
     width: 100%;
-    overflow-x: hidden;
     height: 100%;
     margin: 0;
     font: {
