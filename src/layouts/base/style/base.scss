@@ -75,14 +75,6 @@ html {
         background-color: color-mix(in srgb, wave.$sumiInk5 20%, transparent);
       }
 
-      @keyframes shimmer {
-        0% {
-          background-position: 200% 0;
-        }
-        100% {
-          background-position: -200% 0;
-        }
-      }
       img {
         border-radius: 4px;
         background: linear-gradient(
@@ -92,7 +84,25 @@ html {
           rgba(255, 255, 255, 0.06) 75%
         );
         background-size: 200% 100%;
+
+        @keyframes shimmer {
+          0% {
+            background-position: 200% 0;
+          }
+          100% {
+            background-position: -200% 0;
+          }
+        }
         animation: shimmer 2.6s infinite;
+
+        content-visibility: auto;
+
+        // Disable the animation if the image is loaded, the `.loaded` class is
+        // added by a script
+        &.loaded {
+          animation: none;
+          background: none;
+        }
 
         margin: 0;
         overflow: scroll;
