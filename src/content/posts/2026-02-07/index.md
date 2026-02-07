@@ -1,0 +1,378 @@
+---
+title: Nix Submodules Haven't Been Painful for a While
+summary: An update to a previous post where I complained some time ago
+tags:
+  - nix
+---
+
+# Context
+
+Around a year and a half ago I wrote a post complaining about [Nix and Git Submodules](./../2024-07-26/index.md). That is no longer accurate and hasn't been for a while. I've been kinda forgetting to write this despite a **TODO** item sitting in my backlog for quite a while.
+
+![Image showing how long a TODO item to create this very post has been sitting in my backlog](assets/index/todo-backlog-nix-submodules.png)
+
+Yeah, it's been 301 days since I made a note to write this. I'm lazy I guess.
+
+# Wait, so what changed?
+
+Since [February 4th, 2025](https://github.com/NixOS/nix/commit/25fcc8d1aba201cb8d84d29a1f7a40b8fb1a0ce5), you can set `input.self.submodules = true;` in a Nix Flake and it will include your submodules as part of the Nix builds, fetches, etc.
+
+It had a few bugs here and there for a month or two afterwards where it occasionally broke, but for a good while now it's been rock solid. All of my complaints about needing to pass `.?submodules=1` to the end of various Nix commands were rendered invalid since then.
+
+# An Example
+
+So let's say you have a Nix Flake in a Git repository that depends on submodules. For example, let's say you use [Agenix](https://github.com/ryantm/agenix), [Sops-Nix](https://github.com/Mic92/sops-nix), or some other secrets management that stores those secrets in the repository. Currently, the recommendation is to just encrypt those secrets and leave the encrypted files publicly visible. I think that came straight from the _bad idea fairy_.
+
+Let's say we wanted to be a little more cautious and stop [Harvest now, decrypt later](https://en.wikipedia.org/wiki/Harvest_now,_decrypt_later) strategies from working against us. A good strategy then, is to store the secrets outside of the public repository in a separate, private, Git repository and then pull those secrets in by adding them as a Git submodule to the public repository. I've done exactly that in [my Nix config](https://github.com/priceHiller/dots), see the `secrets` submodule -- it's a private submodule so random folks can't just download my secrets and wait until a possible vulnerability crops up in [Age](https://github.com/FiloSottile/age) and then harvest everything I have in there.
+
+So, what I do now is simply add `self.submodules` to my Nix Flake inputs and use the secrets as a path input, [over here](https://github.com/PriceHiller/dots/blob/71089cd357a3d677914199bff91a9d541996f773/flake.nix#L73-L81). This works great! Public users can still browse my slop repository with all its sharp edges and terrible abstractions without being able to copy down even encrypted secrets.
+
+<details>
+<summary>Here's a snippet of that Flake if you don't want to browse:</summary>
+
+```nix
+{
+
+
+  inputs = {
+    # ::: [class="code-folded"]
+    nix.url = "git+https://github.com/nixos/nix?shallow=1";
+    deploy-rs.url = "github:serokell/deploy-rs";
+    nixos-facter-modules.url = "github:nix-community/nixos-facter-modules";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
+
+    nixpkgs-unstable.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixpkgs-unstable";
+    nixpkgs-stable.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-25.11";
+
+    harmonia.url = "github:nix-community/harmonia";
+    nix-post-build-hook-queue = {
+      url = "github:newam/nix-post-build-hook-queue";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.treefmt.follows = "";
+    };
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?shallow=1";
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    agenix = {
+      url = "github:yaxitech/ragenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    impermanence.url = "github:nix-community/impermanence";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    blog = {
+      url = "git+https://git.pricehiller.com/price/Blog";
+    };
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    apple-emoji-linux.url = "github:samuelngs/apple-emoji-linux";
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+    rofi-tools = {
+      url = "github:szaffarano/rofi-tools";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+    zsh-completions = {
+      url = "github:zsh-users/zsh-completions";
+      flake = false;
+    };
+    oisd-blocklist = {
+      url = "github:sjhgvr/oisd";
+      flake = false;
+    };
+    copyparty = {
+      url = "github:9001/copyparty";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+    nixcord.url = "github:kaylorben/nixcord";
+
+    # :::
+    self.submodules = true;
+    secrets = {
+      url = ./secrets;
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        agenix.follows = "agenix";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
+  };
+
+  # ::: [class="code-folded"]
+  outputs =
+    inputs@{ self, nixpkgs, ... }:
+    let
+      inherit (self) outputs;
+      forAllSystems =
+        function:
+        nixpkgs.lib.genAttrs
+          [
+            "aarch64-linux"
+            "i686-linux"
+            "x86_64-linux"
+            "aarch64-darwin"
+            "x86_64-darwin"
+          ]
+          (
+            system:
+            function (
+              import nixpkgs {
+                inherit system;
+                overlays = [
+                  inputs.agenix.overlays.default
+                  self.overlays.modifications
+                  self.overlays.additions
+                ];
+              }
+            )
+          );
+      treefmtEval = forAllSystems (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
+    in
+    {
+      formatter = forAllSystems (
+        pkgs: treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper
+      );
+      packages = forAllSystems (
+        pkgs:
+        let
+          bootstrapISO = self.nixosConfigurations.bootstrapper.config.system.build.isoImage;
+        in
+        {
+          inherit bootstrapISO;
+          default = bootstrapISO;
+        }
+      );
+      overlays = import ./overlays { inherit inputs; };
+      apps = forAllSystems (pkgs: {
+        default = {
+          type = "app";
+          meta.description = "Run nixos-rebuild switch";
+          program =
+            pkgs.writeShellApplication {
+              name = "nixos-rebuild-wrapper";
+              runtimeInputs = with pkgs; [
+                nix-output-monitor
+                nixos-rebuild
+                hostname
+              ];
+              text = ''
+                MSG="Switching to NixOS configuration: '$(hostname)'"
+                HEADER=$(printf "%''${#MSG}s\n" | tr ' ' "=")
+                echo
+                echo "$HEADER"
+                echo "$MSG"
+                echo "$HEADER"
+                echo
+                sudo nixos-rebuild switch --flake ".#$(hostname)" --accept-flake-config |& nom
+              '';
+            }
+            |> pkgs.lib.getExe;
+        };
+        repl = {
+          type = "app";
+          meta.description = "Launch interactive repl to inspect config";
+          program =
+            pkgs.writeShellApplication {
+              name = "inspect-flake";
+              runtimeInputs = with pkgs; [
+                git
+              ];
+              text = ''
+                nix repl --file "$(git rev-parse --show-toplevel)"/repl.nix
+              '';
+            }
+            |> pkgs.lib.getExe;
+        };
+      });
+      devShells = forAllSystems (pkgs: {
+        default = pkgs.mkShell {
+          packages = with pkgs; [
+            age
+            agenix
+            age-plugin-yubikey
+            nixos-rebuild
+            nixos-install-tools
+            inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.deploy-rs
+          ];
+          shellHook = ''
+            export RULES="$PWD/secrets/secrets.nix"
+          '';
+        };
+      });
+      checks = forAllSystems (pkgs: {
+        formatting = treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.check self;
+      });
+      nixosConfigurations =
+        let
+          clib = (import ./lib { lib = nixpkgs.lib; });
+        in
+        {
+          orion =
+            let
+              hostname = "orion";
+            in
+            nixpkgs.lib.nixosSystem {
+              specialArgs = {
+                inherit self;
+                inherit inputs;
+                inherit outputs;
+                inherit hostname;
+                inherit clib;
+              };
+              modules =
+                let
+                  age-secrets = {
+                    config = inputs.secrets.secrets.${hostname};
+                  };
+                in
+                [
+                  ./modules/nixos/base-programs.nix
+                  ./modules/nixos/btrfs-rollback.nix
+                  ./modules/nixos/grafana-alloy.nix
+                  ./modules/nixos/vector.nix
+                  ./modules/nixos/logviewer.nix
+                  ./modules/nixos/persistence.nix
+                  ./modules/nixos/dns
+                  inputs.home-manager.nixosModules.home-manager
+                  {
+                    home-manager = {
+                      sharedModules = [
+                        inputs.agenix.homeManagerModules.default
+                        inputs.nixcord.homeModules.nixcord
+                        age-secrets
+                        ./modules/hm/link-file.nix
+                      ];
+                      backupFileExtension = "hm.backup";
+                      extraSpecialArgs = {
+                        clib = (import ./lib { lib = nixpkgs.lib; });
+                        inherit inputs;
+                      };
+                      useGlobalPkgs = true;
+                      useUserPackages = true;
+                      users.price = import ./users/price/home.nix;
+                    };
+                  }
+                  inputs.nix-post-build-hook-queue.nixosModules.default
+                  inputs.nixos-facter-modules.nixosModules.facter
+                  inputs.nixos-hardware.nixosModules.dell-xps-15-9530
+                  inputs.lanzaboote.nixosModules.lanzaboote
+                  inputs.impermanence.nixosModules.impermanence
+                  inputs.agenix.nixosModules.default
+                  inputs.disko.nixosModules.disko
+                  {
+                    config = {
+                      nixpkgs.overlays = [
+                        inputs.neovim-nightly-overlay.overlays.default
+                        inputs.nix-post-build-hook-queue.overlays.default
+                        self.overlays.modifications
+                        self.overlays.additions
+                      ];
+                    };
+                  }
+                  age-secrets
+                  ./hosts/${hostname}
+                ];
+            };
+          luna =
+            let
+              hostname = "luna";
+            in
+            nixpkgs.lib.nixosSystem {
+              specialArgs = {
+                inherit self;
+                inherit inputs;
+                inherit hostname;
+                inherit nixpkgs;
+                inherit clib;
+              };
+              modules = [
+                ./modules/nixos/btrfs-rollback.nix
+                ./modules/nixos/mail.nix
+                ./modules/nixos/grafana-alloy.nix
+                ./modules/nixos/openssh.nix
+                ./modules/nixos/base-programs.nix
+                ./modules/nixos/vector.nix
+                ./modules/nixos/persistence.nix
+                ./modules/nixos/dns
+                inputs.nixos-facter-modules.nixosModules.facter
+                inputs.impermanence.nixosModules.impermanence
+                inputs.agenix.nixosModules.default
+                inputs.disko.nixosModules.disko
+                inputs.harmonia.nixosModules.harmonia
+                inputs.copyparty.nixosModules.default
+                {
+                  config = inputs.secrets.secrets.${hostname};
+                }
+                ./hosts/${hostname}
+              ];
+            };
+          bootstrapper =
+            let
+              hostname = "bootstrapper";
+            in
+            nixpkgs.lib.nixosSystem {
+              specialArgs = {
+                inherit self;
+                inherit inputs;
+                inherit hostname;
+                inherit nixpkgs;
+                inherit clib;
+              };
+              modules = [
+                ./modules/nixos/openssh.nix
+                ./modules/nixos/base-programs.nix
+                {
+                  config = {
+                    nixpkgs.overlays = [
+                      inputs.neovim-nightly-overlay.overlays.default
+                    ];
+                  };
+                }
+                ./hosts/${hostname}
+              ];
+            };
+        };
+      deploy.nodes =
+        let
+          deploy-rs = inputs.deploy-rs;
+        in
+        {
+          luna = {
+            hostname = "luna.hosts.pricehiller.com";
+            fastConnection = true;
+            profiles.system = {
+              sshUser = "root";
+              path = deploy-rs.lib.x86_64-linux.activate.nixos outputs.nixosConfigurations.luna;
+            };
+          };
+        };
+    };
+    # :::
+}
+
+```
+
+</details>
+
+If you're keeping your encrypted secrets in a publicly visible repository, consider vendoring those out to an external Git repository and pulling 'em back in as a Git submodule.
+
+Anyhow, I can now cross that way overdue item off my TODO list.
