@@ -30,12 +30,13 @@ const __Posts = await (async () => {
     const match = post.filePath!.match(
       /.*\/posts\/(\d{4}-\d{2}-\d{2})(?:-(.+))?\/.*.mdx?$/,
     );
+    post.body = post.body ?? "";
     return {
       ...post,
       date: new PostDate(match ? match[1] : "0000-00-00"),
       title: post.data.title || (match ? match[2] : post.id),
       meta: {
-        wordCount: post.body!.split(" ").length,
+        wordCount: (post.body.split(" ").length - 1),
       },
     };
   });
