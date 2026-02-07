@@ -1,16 +1,14 @@
 main {
   display: flex;
   flex-direction: column;
-  width: min(350px, 95%);
+
   > h1:first-of-type {
-    align-self: center;
     padding: 10px;
   }
 
   article-tags {
     justify-content: center;
-    justify-self: end;
-    align-self: end;
+    width: min(350px, 95%);
     flex-wrap: wrap;
     font-weight: bold;
   }

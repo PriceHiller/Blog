@@ -56,8 +56,7 @@ html {
 
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      max-width: min(850px, 92dvw);
+      width: clamp(200px, 850px, 92dvw);
 
       padding-top: 50px;
       padding-bottom: 20px;
