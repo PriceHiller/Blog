@@ -1,3 +1,4 @@
+@use "sass:math";
 @use "@/style/theme/_wave.scss";
 
 article {
@@ -62,6 +63,29 @@ article {
       &:hover {
         color: initial;
       }
+    }
+  }
+
+  details {
+    $fg: wave.$oniViolet2;
+    $overgrow: 2%;
+    border: {
+      style: solid;
+      width: 2px;
+      color: $fg;
+      radius: 5px;
+    }
+    padding: 5px;
+    width: (100% + $overgrow);
+    margin-left: -$overgrow;
+    summary {
+      color: $fg;
+      padding-left: 0.5em;
+    }
+
+    &[open] summary {
+      padding-bottom: 5px;
+      border-bottom: 2px solid $fg;
     }
   }
 }

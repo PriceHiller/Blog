@@ -17,7 +17,6 @@
     "postinstall": "bun2nix --copy-prefix ./../ --output-file ./nix/bun-lock.nix"
   },
   "dependencies": {
-    "astro": "^5.16.9",
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/react": "^4.4.2",
     "@astrojs/sitemap": "^3.7.0",
@@ -29,6 +28,8 @@
     "@fontsource/maple-mono": "^5.2.6",
     "@mdx-js/react": "^3.1.1",
     "@mdx-js/rollup": "^3.1.1",
+    "astro": "^5.16.9",
+    "astro-rehype-relative-markdown-links": "^0.18.1",
     "html-react-parser": "^5.2.11",
     "lucide-react": "^0.562.0",
     "react": "^19.2.3",

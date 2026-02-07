@@ -36,7 +36,7 @@ const __Posts = await (async () => {
       date: new PostDate(match ? match[1] : "0000-00-00"),
       title: post.data.title || (match ? match[2] : post.id),
       meta: {
-        wordCount: (post.body.split(" ").length - 1),
+        wordCount: post.body.split(" ").length - 1,
       },
     };
   });

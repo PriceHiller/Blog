@@ -44,7 +44,12 @@ export function CodeBlockEnhancer() {
     setCodeBlocks(blocks);
 
     document.querySelectorAll(".code-folded").forEach((el) => {
-      const lineCount = (el.textContent?.split("\n").length ?? 1) - 1;
+      const lines = el.textContent?.split("\n");
+      const indentMatch = lines[0].match(/^(\s*)/);
+      const indent = (indentMatch && indentMatch[1]) || "";
+      el.setAttribute("data-indent", `${indent}`);
+
+      const lineCount = lines.length - 1;
       el.setAttribute("data-lines", `${lineCount}`);
     });
 

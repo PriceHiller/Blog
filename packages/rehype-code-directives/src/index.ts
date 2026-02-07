@@ -1,11 +1,6 @@
 import { visit } from "unist-util-visit";
 import { toString } from "hast-util-to-string";
 import type { Root, Element, ElementContent, Text } from "hast";
-import type { Plugin } from "unified";
-
-interface Options {
-  directiveMarker?: string;
-}
 
 interface RenderLine {
   nodes: ElementContent[];
@@ -18,10 +13,10 @@ interface Scope {
   children: ElementContent[];
 }
 
-const rehypeCodeDirectives: Plugin<[Options?], Root> = (options = {}) => {
-  const marker = options.directiveMarker ?? ":::";
+export default function rehypeCodeDirectives() {
+  const marker = ":::";
 
-  return (tree) => {
+  return (tree: Root) => {
     visit(tree, "element", (node: Element) => {
       if (node.tagName !== "pre") return;
 
@@ -152,6 +147,4 @@ const rehypeCodeDirectives: Plugin<[Options?], Root> = (options = {}) => {
       codeElement.children = newRootChildren;
     });
   };
-};
-
-export default rehypeCodeDirectives;
+}

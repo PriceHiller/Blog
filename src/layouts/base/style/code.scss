@@ -21,6 +21,13 @@ code {
   margin-right: -$gap;
   color: wave.$springViolet2;
   background-color: wave.$sumiInk4;
+
+  // This has to be done as webkit (iOS) SUCKS. The modern internet explorer. So
+  // when code is expanded in the `.code-folded` class below, the expanded code
+  // text doesn't use the correct text size and instead too big. This ensures
+  // that Safari correctly sizes the text in those scenarios.
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 pre {
@@ -85,26 +92,16 @@ pre {
       cursor: pointer;
       overflow-y: hidden;
       overflow-x: hidden;
-      position: relative;
       background-color: rgba(0, 0, 0, 0.2);
       @include use-full-width();
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0.25rem;
-        z-index: 1;
-        pointer-events: none;
-      }
+      min-width: max-content;
 
       &[data-lines] {
         max-height: 1lh;
+        max-width: 100%;
 
-        &::after {
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-          content: "▶ (" attr(data-lines) " lines hidden)";
+        &::before {
+          content: attr(data-indent) "▶ (" attr(data-lines) " lines hidden)";
         }
       }
 
@@ -113,11 +110,9 @@ pre {
         background-color: rgba(0, 0, 0, 0.2);
         padding-right: 0;
         overflow: visible;
-        @include use-full-width();
-        min-width: max-content;
 
-        &::after {
-          content: "▼";
+        &::before {
+          content: attr(data-indent) "▼ (" attr(data-lines) " lines shown)";
         }
       }
 

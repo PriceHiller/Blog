@@ -9,9 +9,10 @@ import rehypeCodeDirectives from "@blog/rehype-code-directives";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 
+import rehypeAstroRelativeMarkdownLinks from "astro-rehype-relative-markdown-links";
+
 const rehypePlugins = [
   rehypeTreesitter,
-  rehypeCodeDirectives,
   rehypeSlug,
   [
     rehypeAutolinkHeadings,
@@ -19,6 +20,8 @@ const rehypePlugins = [
       behavior: "wrap",
     },
   ],
+  rehypeCodeDirectives,
+  rehypeAstroRelativeMarkdownLinks,
 ];
 
 export default defineConfig({
