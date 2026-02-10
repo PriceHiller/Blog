@@ -105,6 +105,10 @@ pre {
         }
       }
 
+      .line {
+        filter: brightness(90%);
+      }
+
       &.expanded {
         max-height: none;
         background-color: rgba(0, 0, 0, 0.2);
@@ -113,11 +117,17 @@ pre {
 
         &::before {
           content: attr(data-indent) "▼ (" attr(data-lines) " lines shown)";
+          background-color: rgba(255, 255, 255, 0.07);
+          @include use-full-width();
         }
       }
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        .line {
+          filter: none;
+        }
+
+        background-color: rgba(255, 255, 255, 0.03);
       }
     }
   }
