@@ -13,6 +13,7 @@ import rehypeAstroRelativeMarkdownLinks from "astro-rehype-relative-markdown-lin
 
 const rehypePlugins = [
   rehypeTreesitter,
+  rehypeCodeDirectives,
   rehypeSlug,
   [
     rehypeAutolinkHeadings,
@@ -20,7 +21,6 @@ const rehypePlugins = [
       behavior: "wrap",
     },
   ],
-  rehypeCodeDirectives,
   rehypeAstroRelativeMarkdownLinks,
 ];
 
