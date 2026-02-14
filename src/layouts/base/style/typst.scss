@@ -1,0 +1,12 @@
+svg.typst-doc {
+  font-size: 1.3em;
+
+  .typst-text,
+  .typst-shape {
+    fill: currentColor;
+  }
+}
+
+p svg.typst-doc {
+  font-size: 1.1em;
+}
