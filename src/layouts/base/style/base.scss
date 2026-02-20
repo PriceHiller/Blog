@@ -40,11 +40,11 @@ html {
 
     font: {
       family: "Lexend Variable", sans-serif;
-      weight: 400;
     }
 
     strong {
-      font-weight: 800;
+      // Increase the brightness of bold text by 10%
+      color: oklch(from currentColor calc(l * 1.1) c h);
     }
 
     line-height: 1.5;
